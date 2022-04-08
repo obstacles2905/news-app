@@ -2,13 +2,9 @@ import dotenv from 'dotenv';
 import {Schema, model, connect} from 'mongoose';
 import {logger} from "../../logger";
 import {INewsDataTranslated} from "../importer/contracts";
+import {IMongoDbProvider} from "./contracts";
 
 dotenv.config({path: "../.env"});
-
-export interface IMongoDbProvider {
-    connect(): Promise<void>;
-    uploadNews(newsData: INewsDataTranslated[]): Promise<void>
-}
 
 const newsSchema = new Schema<INewsDataTranslated>({
     title: {type: String, required: true, index: true},
@@ -55,14 +51,28 @@ export class MongoDbProvider implements IMongoDbProvider{
 
     async uploadNews(newsData: INewsDataTranslated[]) {
         try {
-            for (const news of newsData) {
-                const model = new NewsModel(news);
-                await model.save();
-            }
-            logger.info(`Successfully added ${newsData.length} records`);
+            const notExistingNewsTitles = await this.findNotExistingNews(newsData);
+            const newsToInsert = newsData.filter(news => notExistingNewsTitles.includes(news.title));
+
+            await NewsModel.insertMany(newsToInsert)
+                .then(() => {
+                    logger.info(`Successfully added ${newsToInsert.length} records`);
+                })
         } catch(err) {
             logger.error(`Failed to upload news data ${err}`);
             throw err;
         }
+    }
+
+    //TODO use this function once we get titles in importers to not to perform redundant requests to the sources
+    async findNotExistingNews(newsData: INewsDataTranslated[]): Promise<string[]> {
+        const newsTitles = newsData.map(news => news.title);
+
+        const result = await NewsModel.find({
+            title: { $in: newsTitles}
+        }, 'title');
+        const newsPresentInDb = result.map(news => news.title);
+
+        return newsTitles.filter(news => !newsPresentInDb.includes(news));
     }
 }

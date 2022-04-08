@@ -19,3 +19,13 @@ export interface INewsTitleData {
     titleImage: string;
     source: INewsSources
 }
+
+export interface INewsImporterFactory {
+    importNewsFromAllSources(): Promise<INewsData[]>;
+}
+
+export interface INewsImporter {
+    importLatestNews(): Promise<INewsData[]>;
+    fetchTitleData(): Promise<INewsTitleData[]>;
+    fetchContentData(titleData: INewsTitleData[]): Promise<INewsData[]>
+}

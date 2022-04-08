@@ -1,7 +1,6 @@
 import axios from "axios";
 import cheerio from "cheerio";
-import {INewsImporter} from "./importer";
-import {INewsData, INewsSources, INewsTitleData} from "./contracts";
+import {INewsData, INewsImporter, INewsSources, INewsTitleData} from "./contracts";
 
 export class PCGamerImporter implements INewsImporter {
     private readonly link: string;

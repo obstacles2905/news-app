@@ -1,5 +1,4 @@
-import {INewsData, INewsSources, INewsTitleData} from "./contracts";
-import {INewsImporter} from "./importer";
+import {INewsData, INewsImporter, INewsSources, INewsTitleData} from "./contracts";
 
 export class TheGuardianImporter implements INewsImporter {
     private readonly link: string;
