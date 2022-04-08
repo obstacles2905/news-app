@@ -12,8 +12,9 @@ export interface IScheduler {
 let onTickRunning = false;
 export class Scheduler implements IScheduler {
     private cronJob: CronJob;
+    private dbProvider: MongoDbProvider;
 
-    constructor() {
+    constructor(dbProvider: MongoDbProvider) {
         const onTick = (): void => {
             if (!onTickRunning) {
                 onTickRunning = true;
@@ -34,6 +35,7 @@ export class Scheduler implements IScheduler {
         const runOnInit = false;
         const schedulerCronExpression = process.env.CRON_EXPRESSION!;
         this.cronJob = new CronJob(schedulerCronExpression, onTick, onComplete, start, timezone, this, runOnInit);
+        this.dbProvider = dbProvider;
     }
 
     private async schedule() {
@@ -43,9 +45,7 @@ export class Scheduler implements IScheduler {
         const translator = new Translator({});
         const translatedNews = translator.translate(news);
 
-        const dbProvider = new MongoDbProvider();
-        await dbProvider.connect();
-        await dbProvider.uploadNews(translatedNews);
+        await this.dbProvider.uploadNews(translatedNews);
     }
 
     public start() {

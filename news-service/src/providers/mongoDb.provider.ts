@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import {Schema, model, connect} from 'mongoose';
-import {INewsDataTranslated} from "../importer/importer";
 import {logger} from "../../logger";
+import {INewsDataTranslated} from "../importer/contracts";
 
 dotenv.config({path: "../.env"});
 

@@ -1,6 +1,7 @@
-import {INewsTitleData, INewsImporter, INewsData} from "./importer";
 import axios from "axios";
 import cheerio from "cheerio";
+import {INewsImporter} from "./importer";
+import {INewsData, INewsSources, INewsTitleData} from "./contracts";
 
 export class PCGamerImporter implements INewsImporter {
     private readonly link: string;
@@ -25,7 +26,8 @@ export class PCGamerImporter implements INewsImporter {
                         title: $(element).find('.article-name').text(),
                         url: $(element).find('a').attr('href')!,
                         date: $(element).find('time').attr('datetime')!,
-                        titleImage: $(element).find('img').attr('data-original-mos')!
+                        titleImage: $(element).find('img').attr('data-original-mos')!,
+                        source: INewsSources.PCGamer
                     })
                 )
                     .get()

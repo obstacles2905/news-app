@@ -1,6 +1,5 @@
-import {INewsTitleData, INewsImporter, INewsData} from "./importer";
-import axios from "axios";
-import cheerio from "cheerio";
+import {INewsData, INewsSources, INewsTitleData} from "./contracts";
+import {INewsImporter} from "./importer";
 
 export class TheGuardianImporter implements INewsImporter {
     private readonly link: string;
@@ -21,7 +20,8 @@ export class TheGuardianImporter implements INewsImporter {
                title: 'some title 1',
                url: 'https://someUrl1.com',
                date: 'someDate1',
-               titleImage: 'https://someImageLink.com'
+               titleImage: 'https://someImageLink.com',
+               source: INewsSources.TheGuardian
            }
        ]
     }

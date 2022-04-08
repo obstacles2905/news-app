@@ -1,4 +1,4 @@
-import {INewsData, INewsDataTranslated} from "../importer/importer";
+import {INewsData, INewsDataTranslated} from "../importer/contracts";
 
 export interface ITranslator {
     translate(newsData: INewsData[]): any
