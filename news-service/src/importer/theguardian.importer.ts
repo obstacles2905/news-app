@@ -1,10 +1,13 @@
 import {INewsData, INewsImporter, INewsSources, INewsTitleData} from "./contracts";
+import {IMongoDbProvider} from "../providers/contracts";
 
 export class TheGuardianImporter implements INewsImporter {
     private readonly link: string;
+    private readonly dbProvider: IMongoDbProvider;
 
-    constructor() {
+    constructor(dbProvider: IMongoDbProvider) {
         this.link = 'https://www.theguardian.com/games';
+        this.dbProvider = dbProvider;
     }
 
     async importLatestNews(): Promise<INewsData[]> {

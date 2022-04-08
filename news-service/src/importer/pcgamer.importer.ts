@@ -1,17 +1,22 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import {INewsData, INewsImporter, INewsSources, INewsTitleData} from "./contracts";
+import {IMongoDbProvider} from "../providers/contracts";
 
 export class PCGamerImporter implements INewsImporter {
     private readonly link: string;
+    private readonly dbProvider: IMongoDbProvider;
 
-    constructor() {
+    constructor(dbProvider: IMongoDbProvider) {
         this.link = 'https://www.pcgamer.com/uk/news/';
+        this.dbProvider = dbProvider;
     }
 
     async importLatestNews(): Promise<INewsData[]> {
-        const newsTitleData = (await this.fetchTitleData()).slice(0, 2);
-        return this.fetchContentData(newsTitleData);
+        const newsTitleData = (await this.fetchTitleData()).slice(0, 3);
+        const notProcessedNews = await this.dbProvider.findNotProcessedNews(newsTitleData);
+
+        return this.fetchContentData(notProcessedNews);
     }
 
     async fetchTitleData(): Promise<INewsTitleData[]> {
@@ -30,7 +35,7 @@ export class PCGamerImporter implements INewsImporter {
                     })
                 )
                     .get()
-                    .slice(1)
+                    .slice(1) //first record is always undefined due to library specifications
             })
     }
 

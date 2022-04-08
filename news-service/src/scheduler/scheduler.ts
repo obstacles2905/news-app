@@ -24,7 +24,7 @@ export class Scheduler implements IScheduler {
                         logger.info(`done`);
                         onTickRunning = false;
                     })
-      }
+        }
     };
         const onComplete = undefined;
         const start = false;
@@ -36,7 +36,7 @@ export class Scheduler implements IScheduler {
     }
 
     private async schedule() {
-        const importer = new NewsImporterFactory();
+        const importer = new NewsImporterFactory(this.dbProvider);
         const news = await importer.importNewsFromAllSources();
 
         const translator = new NLPApiProvider();
