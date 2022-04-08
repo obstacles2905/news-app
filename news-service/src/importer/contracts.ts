@@ -1,4 +1,5 @@
 export interface INewsDataTranslated extends INewsData {
+    titleTranslated: string;
     textTranslated: string[];
 }
 
@@ -17,7 +18,7 @@ export interface INewsTitleData {
     url: string;
     date: string;
     titleImage: string;
-    source: INewsSources
+    source: INewsSources;
 }
 
 export interface INewsImporterFactory {

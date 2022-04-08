@@ -10,7 +10,7 @@ export class PCGamerImporter implements INewsImporter {
     }
 
     async importLatestNews(): Promise<INewsData[]> {
-        const newsTitleData = await this.fetchTitleData();
+        const newsTitleData = (await this.fetchTitleData()).slice(0, 2);
         return this.fetchContentData(newsTitleData);
     }
 

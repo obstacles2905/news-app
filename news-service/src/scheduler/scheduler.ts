@@ -1,8 +1,9 @@
 import {CronJob} from "cron";
 import {logger} from "../../logger";
 import {NewsImporterFactory} from "../importer/importer";
-import {Translator} from "../translator/translator";
 import {MongoDbProvider} from "../providers/mongoDb.provider";
+import {NLPApiProvider} from "../providers/nlpApi.provider";
+import {INewsDataTranslated, INewsSources} from "../importer/contracts";
 
 export interface IScheduler {
   start(): void;
@@ -23,10 +24,6 @@ export class Scheduler implements IScheduler {
                         logger.info(`done`);
                         onTickRunning = false;
                     })
-                    .catch((error: any) => {
-                        logger.error(error);
-                        onTickRunning = false;
-                    });
       }
     };
         const onComplete = undefined;
@@ -42,8 +39,13 @@ export class Scheduler implements IScheduler {
         const importer = new NewsImporterFactory();
         const news = await importer.importNewsFromAllSources();
 
-        const translator = new Translator({});
-        const translatedNews = translator.translate(news);
+        const translator = new NLPApiProvider();
+
+        const translatedNews: INewsDataTranslated[] = [];
+        for (const n of news) {
+            const translation = await translator.translate(n);
+            translatedNews.push(translation);
+        }
 
         await this.dbProvider.uploadNews(translatedNews);
     }
@@ -57,3 +59,12 @@ export class Scheduler implements IScheduler {
         this.cronJob.stop();
     }
 }
+
+export const newsMock = {
+    title: 'Ms. Pac-Man is being written-out of Pac-Man history',
+    url: 'https://www.pcgamer.com/uk/ms-pac-man-is-being-written-out-of-pac-man-history/',
+    date: '2022-04-08T14:15:51Z',
+    titleImage: 'https://cdn.mos.cms.futurecdn.net/Ez7XdF8Bo78ko4EmN7eYvm.jpg',
+    source: INewsSources.PCGamer,
+    textByParagraphs: ['paragraph 1 car and apple', 'paragraph 2 boy and girl', `paragraph 3 what's with Andy?`]
+};

@@ -8,6 +8,7 @@ dotenv.config({path: "../.env"});
 
 const newsSchema = new Schema<INewsDataTranslated>({
     title: {type: String, required: true, index: true},
+    titleTranslated: {type: String, required: true},
     url: {type: String, required: true},
     date: {type: String, required: true},
     titleImage: {type: String, required: true},

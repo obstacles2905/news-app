@@ -11,6 +11,9 @@ export class Translator implements ITranslator {
     }
 
     translate(newsData: INewsData[]): INewsDataTranslated[] {
-        return newsData.map(news => Object.assign(news, {textTranslated: ['параграф1', 'параграф2']}));
+        return newsData.map(news => Object.assign(news, {
+            titleTranslated: 'заголовок1',
+            textTranslated: ['параграф1', 'параграф2']
+        }));
     }
 }
