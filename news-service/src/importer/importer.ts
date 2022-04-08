@@ -1,6 +1,10 @@
 import {PCGamerImporter} from "./pcgamer.importer";
 import {TheGuardianImporter} from "./theguardian.importer";
 
+export interface INewsDataTranslated extends INewsData {
+    textTranslated: string[];
+}
+
 export interface INewsData extends INewsTitleData {
     textByParagraphs: string[];
     images?: string[];
@@ -9,7 +13,7 @@ export interface INewsData extends INewsTitleData {
 export interface INewsTitleData {
     title: string;
     url: string;
-    createdAt: string;
+    date: string;
     titleImage: string;
 }
 

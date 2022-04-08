@@ -1,8 +1,4 @@
-import {INewsData} from "../importer/importer";
-
-interface INewsDataTranslated extends INewsData {
-    textTranslated: string[];
-}
+import {INewsData, INewsDataTranslated} from "../importer/importer";
 
 export interface ITranslator {
     translate(newsData: INewsData[]): any

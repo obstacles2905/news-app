@@ -24,7 +24,7 @@ export class PCGamerImporter implements INewsImporter {
                     ({
                         title: $(element).find('.article-name').text(),
                         url: $(element).find('a').attr('href')!,
-                        createdAt: $(element).find('time').attr('datetime')!,
+                        date: $(element).find('time').attr('datetime')!,
                         titleImage: $(element).find('img').attr('data-original-mos')!
                     })
                 )

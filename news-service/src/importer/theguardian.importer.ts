@@ -20,7 +20,7 @@ export class TheGuardianImporter implements INewsImporter {
            {
                title: 'some title 1',
                url: 'https://someUrl1.com',
-               createdAt: 'someDate1',
+               date: 'someDate1',
                titleImage: 'https://someImageLink.com'
            }
        ]
