@@ -14,6 +14,7 @@ const newsSchema = new Schema<INewsDataTranslated>({
     textByParagraphs: {type: [String], required: true},
     textTranslated: {type: [String], required: true},
     images: {type: [String]},
+    source: {type: String, required: true}
 }, {timestamps: true});
 
 const NewsModel = model<INewsDataTranslated>('News', newsSchema);
